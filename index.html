@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toko Roti & Kue WAHAB</title>
+    <!-- Using Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter for general text, Playfair Display for headings -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            // Warm, baked goods colors
+                            light: '#fdfbf7',     // Off-white/cream background
+                            green: '#e6ebd8',     // Soft green from the logo background
+                            orange: '#e65c3d',    // Burnt orange/terracotta from text
+                            brown: '#8c4a32',     // Darker brown for contrast
+                            dark: '#4a3f35',      // Text color
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Custom styles that are harder to do with pure Tailwind utilities */
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(230, 235, 216, 0.5);
+        }
+
+        .hero-pattern {
+            background-color: #fdfbf7;
+            /* Subtle dot pattern for texture */
+            background-image: radial-gradient(#e6ebd8 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Line art SVG styling */
+        .bread-line {
+            stroke: #e65c3d;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        /* Product card hover effect */
+        .product-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-brand-light text-brand-dark font-sans antialiased overflow-x-hidden selection:bg-brand-orange selection:text-white">
+
+    <!-- Main App Container for Switching Views -->
+    <div id="app-view-container">
+
+        <!-- VIEW 1: PUBLIC WEBSITE -->
+        <div id="public-view" class="view-section">
+            <!-- Navigation -->
+            <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center h-16">
+                        <!-- Logo with SVG next to text -->
+                        <div class="flex-shrink-0 flex items-center">
+                            <a href="#home" class="flex items-center gap-2 font-serif text-2xl font-bold text-brand-orange tracking-wider">
+                                <svg width="36" height="24" viewBox="0 0 200 100" class="drop-shadow-sm">
+                                    <path class="bread-line" d="M10,60 Q30,60 40,50 Q45,35 60,30 Q65,20 80,25 Q90,15 110,25 Q125,20 135,35 Q150,30 160,50 Q170,60 190,55" />
+                                    <path class="bread-line" d="M40,50 Q60,70 100,75 Q140,70 160,50" />
+                                    <path class="bread-line" d="M60,30 C65,45 75,50 80,25" />
+                                    <path class="bread-line" d="M90,20 C95,45 105,50 110,25" />
+                                    <path class="bread-line" d="M120,25 C125,45 130,45 135,35" />
+                                    <path class="bread-line" d="M60,60 Q70,55 80,65 Q90,55 100,65 Q110,55 120,65 Q130,55 140,60" />
+                                </svg>
+                                <span>WAHAB</span>
+                            </a>
+                        </div>
+                        
+                        <!-- Desktop Menu -->
+                        <div class="hidden md:flex space-x-8 items-center">
+                            <a href="#home" class="text-brand-dark hover:text-brand-orange transition-colors px-3 py-2 text-sm font-medium">Beranda</a>
+                            <a href="#about" class="text-brand-dark hover:text-brand-orange transition-colors px-3 py-2 text-sm font-medium">Tentang Kami</a>
+                            <a href="#products" class="text-brand-dark hover:text-brand-orange transition-colors px-3 py-2 text-sm font-medium">Menu</a>
+                            
+                            <!-- Auth Container (Desktop) -->
+                            <div id="auth-container-desktop" class="relative">
+                                <button onclick="openLoginModal()" id="login-btn-desktop" class="text-brand-orange border-2 border-brand-orange hover:bg-brand-orange hover:text-white transition-colors px-5 py-1.5 rounded-full text-sm font-bold ml-2">Login</button>
+                            </div>
+                        </div>
+
+                        <!-- Mobile menu button -->
+                        <div class="md:hidden flex items-center">
+                            <button id="mobile-menu-btn" class="text-brand-dark hover:text-brand-orange focus:outline-none p-2">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" class="md:hidden hidden bg-brand-light border-t border-brand-green absolute w-full shadow-lg">
+                    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                        <a href="#home" class="block px-3 py-2 text-base font-medium text-brand-dark hover:text-brand-orange hover:bg-brand-green/35 rounded-md">Beranda</a>
+                        <a href="#about" class="block px-3 py-2 text-base font-medium text-brand-dark hover:text-brand-orange hover:bg-brand-green/35 rounded-md">Tentang Kami</a>
+                        <a href="#products" class="block px-3 py-2 text-base font-medium text-brand-dark hover:text-brand-orange hover:bg-brand-green/35 rounded-md">Menu</a>
+                        <div class="border-t border-brand-green/40 my-2 pt-2"></div>
+                        
+                        <!-- Auth Container (Mobile) -->
+                        <div id="auth-container-mobile">
+                            <button onclick="openLoginModal()" id="login-btn-mobile" class="w-full text-left block px-3 py-2 text-base font-bold text-brand-orange hover:bg-brand-orange hover:text-white rounded-md transition-colors"><i class="fas fa-lock text-sm mr-2"></i>Login ke CMS</button>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Hero Section -->
+            <section id="home" class="relative pt-24 pb-12 lg:pt-32 lg:pb-20 hero-pattern min-h-[90vh] flex items-center justify-center">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                    <!-- SVG Logo Recreation -->
+                    <div class="flex justify-center mb-6">
+                        <svg width="200" height="100" viewBox="0 0 200 100" class="mx-auto drop-shadow-sm">
+                            <path class="bread-line" d="M10,60 Q30,60 40,50 Q45,35 60,30 Q65,20 80,25 Q90,15 110,25 Q125,20 135,35 Q150,30 160,50 Q170,60 190,55" />
+                            <path class="bread-line" d="M40,50 Q60,70 100,75 Q140,70 160,50" />
+                            <path class="bread-line" d="M60,30 C65,45 75,50 80,25" />
+                            <path class="bread-line" d="M90,20 C95,45 105,50 110,25" />
+                            <path class="bread-line" d="M120,25 C125,45 130,45 135,35" />
+                            <path class="bread-line" d="M60,60 Q70,55 80,65 Q90,55 100,65 Q110,55 120,65 Q130,55 140,60" />
+                        </svg>
+                    </div>
+
+                    <p id="hero-tagline" class="text-sm md:text-base font-medium text-brand-brown tracking-widest uppercase mb-4">Spesialis Bolen</p>
+                    <h1 id="hero-title" class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-brand-orange mb-4 leading-tight">
+                        Toko Roti & Kue<br/>WAHAB
+                    </h1>
+                    <p id="hero-desc" class="mt-4 text-base md:text-lg text-brand-dark/80 max-w-xl mx-auto mb-8 leading-relaxed px-4">
+                        Menyajikan kehangatan dalam setiap gigitan. Dibuat dengan bahan pilihan dan resep rahasia keluarga.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 px-4">
+                        <a href="#products" class="w-full sm:w-auto px-8 py-3 rounded-full bg-brand-dark text-white font-medium hover:bg-brand-brown transition-colors shadow-lg hover:shadow-xl text-center">
+                            Lihat Menu
+                        </a>
+                        <a href="https://wa.me/6285977848480?text=Halo%20Toko%20WAHAB,%20saya%20ingin%20memesan..." target="_blank" class="w-full sm:w-auto px-8 py-3 rounded-full bg-brand-orange text-white font-medium hover:bg-opacity-90 transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                            <i class="fab fa-whatsapp text-xl"></i> Pesan Sekarang
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products" class="py-16 md:py-24 bg-brand-light">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <span class="text-sm font-medium text-brand-brown tracking-widest uppercase">Pilihan Favorit</span>
+                        <h2 class="text-3xl md:text-4xl font-serif font-bold text-brand-dark mt-2" id="products-section-heading">Menu Spesial Kami</h2>
+                        <p class="mt-4 text-brand-dark/70 max-w-2xl mx-auto" id="products-section-subtitle">Dibuat fresh setiap hari dengan bahan-bahan premium.</p>
+                    </div>
+
+                    <!-- Dynamic Product Grid container -->
+                    <div id="public-products-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
+                        <!-- Filled by JS -->
+                    </div>
+                    
+                    <!-- Lihat Semua Menu / Kembali ke Menu Utama Button -->
+                    <div class="mt-12 text-center" id="menu-action-container">
+                        <button onclick="handleViewAllMenu()" id="view-all-btn" class="px-8 py-3 rounded-full bg-brand-green/40 border border-brand-green text-brand-dark font-semibold hover:bg-brand-orange hover:text-white transition-all shadow-sm">
+                            Lihat Semua Menu <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <p class="text-sm text-brand-dark/60 mt-4">*Menerima pesanan dalam jumlah besar untuk acara (syukuran, arisan, dll).</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About / Info Section -->
+            <section id="about" class="py-16 bg-brand-green/20">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="bg-white rounded-3xl shadow-sm p-8 md:p-12 border border-brand-green/50 text-center relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 text-brand-green/30 text-9xl">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        
+                        <div class="relative z-10">
+                            <span class="text-sm font-medium text-brand-brown tracking-widest uppercase mb-2 block">Tentang Kami</span>
+                            <h2 class="text-2xl md:text-3xl font-serif font-bold text-brand-dark mb-8">Kunjungi Toko WAHAB</h2>
+                            
+                            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16">
+                                <div class="flex flex-col items-center max-w-xs group cursor-pointer" onclick="window.open('https://maps.google.com/?q=Graha+Bukit+Raya+1+F4+21B+Ngamprah', '_blank')">
+                                    <div class="w-14 h-14 bg-brand-light border border-brand-green rounded-full flex items-center justify-center text-brand-orange mb-4 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                                        <i class="fas fa-map-marker-alt text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-brand-dark mb-2 text-lg">Alamat</h3>
+                                    <p class="text-sm text-brand-dark/70 leading-relaxed" id="footer-address-text">Graha Bukit Raya 1 F4 21B,<br/>Ngamprah, Kabupaten Bandung Barat</p>
+                                </div>
+
+                                <div class="hidden md:block w-px h-24 bg-brand-green/50"></div>
+                                <div class="md:hidden w-24 h-px bg-brand-green/50 my-2"></div>
+
+                                <div class="flex flex-col items-center max-w-xs group cursor-pointer" onclick="window.open('https://wa.me/6285977848480', '_blank')">
+                                    <div class="w-14 h-14 bg-brand-light border border-brand-green rounded-full flex items-center justify-center text-brand-orange mb-4 group-hover:bg-brand-orange group-hover:text-white transition-colors duration-300">
+                                        <i class="fas fa-phone text-xl"></i>
+                                    </div>
+                                    <h3 class="font-semibold text-brand-dark mb-2 text-lg">Kontak</h3>
+                                    <p class="text-sm text-brand-dark/70" id="footer-phone-text">+62 859-7784-8480</p>
+                                    <span class="text-brand-orange text-sm font-medium mt-2 flex items-center gap-1 group-hover:underline">
+                                        Hubungi via WhatsApp <i class="fas fa-external-link-alt text-xs"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer -->
+            <footer class="bg-brand-dark text-brand-light py-10 border-t border-brand-brown">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                    <div class="mb-6 md:mb-0 flex items-center justify-center md:justify-start gap-2">
+                        <svg width="36" height="24" viewBox="0 0 200 100" class="drop-shadow-sm">
+                            <path class="bread-line" d="M10,60 Q30,60 40,50 Q45,35 60,30 Q65,20 80,25 Q90,15 110,25 Q125,20 135,35 Q150,30 160,50 Q170,60 190,55" />
+                            <path class="bread-line" d="M40,50 Q60,70 100,75 Q140,70 160,50" />
+                            <path class="bread-line" d="M60,30 C65,45 75,50 80,25" />
+                            <path class="bread-line" d="M90,20 C95,45 105,50 110,25" />
+                            <path class="bread-line" d="M120,25 C125,45 130,45 135,35" />
+                            <path class="bread-line" d="M60,60 Q70,55 80,65 Q90,55 100,65 Q110,55 120,65 Q130,55 140,60" />
+                        </svg>
+                        <span class="font-serif text-2xl font-bold text-brand-orange tracking-wider">WAHAB</span>
+                    </div>
+                    
+                    <div class="text-brand-light/70 text-sm">
+                        <p>&copy; <span id="year"></span> Toko Roti & Kue WAHAB.</p>
+                        <p class="mt-1">Semua hak dilindungi.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <!-- VIEW 2: CMS DASHBOARD (Hidden by Default) -->
+        <div id="cms-view" class="view-section hidden min-h-screen bg-gray-50 flex flex-col">
+            <!-- CMS Top Header -->
+            <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-brand-orange/10 rounded-xl flex items-center justify-center text-brand-orange">
+                            <i class="fas fa-tools text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="font-serif font-bold text-brand-dark text-lg">CMS Dashboard</h1>
+                            <p class="text-xs text-gray-500">Toko Roti & Kue WAHAB</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3">
+                        <button onclick="switchView('public')" class="flex items-center gap-2 px-4 py-2 bg-brand-light border border-brand-green text-brand-dark rounded-xl text-sm font-semibold hover:bg-brand-green/20 transition-all">
+                            <i class="fas fa-external-link-alt text-xs"></i>
+                            <span>Lihat Website</span>
+                        </button>
+                        <button onclick="handleLogout(event)" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-100 transition-all">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="hidden sm:inline">Logout</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CMS Main Content Layout -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-grow flex flex-col md:flex-row gap-8">
+                
+                <!-- CMS Sidebar Navigation (Reordered: Hero Section, Kelola Menu, Profil Toko) -->
+                <aside class="w-full md:w-64 shrink-0">
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-3 space-y-1">
+                        <button onclick="switchCmsTab('hero')" id="tab-btn-hero" class="cms-tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-brand-orange bg-brand-green/20 transition-all">
+                            <i class="fas fa-image w-5 text-center"></i>
+                            <span>Hero Section</span>
+                        </button>
+                        <button onclick="switchCmsTab('products')" id="tab-btn-products" class="cms-tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-brand-dark transition-all">
+                            <i class="fas fa-bread-slice w-5 text-center"></i>
+                            <span>Kelola Menu</span>
+                        </button>
+                        <button onclick="switchCmsTab('settings')" id="tab-btn-settings" class="cms-tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 hover:text-brand-dark transition-all">
+                            <i class="fas fa-store w-5 text-center"></i>
+                            <span>Profil Toko</span>
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- CMS Content Panel -->
+                <main class="flex-grow">
+                    
+                    <!-- TAB 1: HERO SECTION -->
+                    <div id="cms-tab-hero" class="cms-tab-content space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                            <h2 class="text-xl font-bold text-brand-dark font-serif mb-2">Pengaturan Hero Section</h2>
+                            <p class="text-sm text-gray-500 mb-6">Ubah teks sambutan utama di bagian atas halaman beranda website.</p>
+
+                            <form onsubmit="saveHeroSettings(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-brand-dark mb-1">Tagline Kecil</label>
+                                    <input type="text" id="setting-hero-tagline" value="Spesialis Bolen" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm" required>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-brand-dark mb-1">Judul Utama (Gunakan baris baru jika perlu)</label>
+                                    <textarea id="setting-hero-title" rows="2" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm" required>Toko Roti & Kue WAHAB</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-brand-dark mb-1">Deskripsi Singkat</label>
+                                    <textarea id="setting-hero-desc" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm" required>Menyajikan kehangatan dalam setiap gigitan. Dibuat dengan bahan pilihan dan resep rahasia keluarga.</textarea>
+                                </div>
+                                <div class="pt-4">
+                                    <button type="submit" class="px-6 py-3 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown transition-all shadow-sm text-sm">
+                                        Simpan Perubahan Hero Section
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: KELOLA MENU -->
+                    <div id="cms-tab-products" class="cms-tab-content hidden space-y-6">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                            <div>
+                                <h2 class="text-xl font-bold text-brand-dark font-serif">Daftar Menu Produk</h2>
+                                <p class="text-sm text-gray-500">Tambah, ubah, atau hapus produk roti dan kue yang tampil di website.</p>
+                            </div>
+                            <button onclick="openProductFormModal()" class="px-5 py-2.5 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown transition-all shadow-sm flex items-center justify-center gap-2 text-sm">
+                                <i class="fas fa-plus"></i> Menu Baru
+                            </button>
+                        </div>
+
+                        <!-- Product List Table -->
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="bg-gray-50 border-b border-gray-200 text-xs font-bold text-gray-500 uppercase tracking-wider">
+                                            <th class="py-3.5 px-6">Produk</th>
+                                            <th class="py-3.5 px-6">Kategori</th>
+                                            <th class="py-3.5 px-6">Status Tampil</th>
+                                            <th class="py-3.5 px-6 text-right">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cms-products-table-body" class="divide-y divide-gray-200 text-sm text-brand-dark">
+                                        <!-- Rendered by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: PROFIL TOKO -->
+                    <div id="cms-tab-settings" class="cms-tab-content hidden space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                            <h2 class="text-xl font-bold text-brand-dark font-serif mb-2">Pengaturan Profil Toko</h2>
+                            <p class="text-sm text-gray-500 mb-6">Ubah informasi kontak, alamat, dan nomor WhatsApp pemesanan.</p>
+
+                            <form onsubmit="saveStoreSettings(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-brand-dark mb-1">Nama Toko</label>
+                                    <input type="text" id="setting-store-name" value="Toko Roti & Kue WAHAB" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm">
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium text-brand-dark mb-1">Nomor WhatsApp Pesanan</label>
+                                        <input type="text" id="setting-whatsapp" value="6285977848480" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-brand-dark mb-1">Kota / Lokasi Utama</label>
+                                        <input type="text" id="setting-location" value="Kabupaten Bandung Barat" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-brand-dark mb-1">Alamat Lengkap</label>
+                                    <textarea id="setting-address" rows="3" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-orange/50 text-sm">Graha Bukit Raya 1 F4 21B, Ngamprah, Kabupaten Bandung Barat</textarea>
+                                </div>
+                                <div class="pt-4">
+                                    <button type="submit" class="px-6 py-3 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown transition-all shadow-sm text-sm">
+                                        Simpan Perubahan Profil
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="fixed inset-0 z-[100] hidden items-end sm:items-center justify-center sm:p-6 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-brand-dark/40 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-2xl max-h-[90vh] sm:max-h-[85vh] overflow-hidden relative z-10 shadow-2xl flex flex-col animate-slide-up sm:animate-fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 bg-white/80 backdrop-blur border border-brand-green/50 rounded-full flex items-center justify-center text-brand-dark hover:text-brand-orange hover:bg-white z-20 shadow-sm transition-all">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+            
+            <div class="overflow-y-auto flex-grow custom-scrollbar">
+                <div class="w-full aspect-[4/3] sm:h-80 relative bg-brand-light">
+                    <img id="modal-main-img" src="" alt="Product Detail" class="w-full h-full object-cover">
+                </div>
+                
+                <div id="modal-thumbnails" class="flex p-4 gap-3 overflow-x-auto bg-brand-light/50 border-b border-brand-green/30 hide-scrollbar"></div>
+                
+                <div class="p-6 sm:p-8">
+                    <h3 id="modal-title" class="text-2xl md:text-3xl font-serif font-bold text-brand-dark mb-3">Nama Produk</h3>
+                    <p id="modal-desc" class="text-brand-dark/80 mb-8 leading-relaxed whitespace-pre-line text-sm sm:text-base"></p>
+                </div>
+            </div>
+
+            <div class="p-4 sm:p-6 bg-white border-t border-brand-green/30 shrink-0">
+                <button id="modal-order-btn" class="w-full py-3.5 sm:py-4 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown transition-colors shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-base sm:text-lg">
+                    <i class="fab fa-whatsapp text-xl"></i> Pesan Ini Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Preview Modal -->
+    <div id="image-preview-modal" class="fixed inset-0 z-[150] hidden items-center justify-center p-4 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeImagePreviewModal()"></div>
+        <div class="relative z-10 max-w-4xl max-h-[90vh] flex flex-col items-center">
+            <button onclick="closeImagePreviewModal()" class="absolute -top-12 right-0 w-10 h-10 bg-white/20 hover:bg-white text-white hover:text-brand-dark rounded-full flex items-center justify-center transition-all">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+            <img id="preview-modal-img" src="" alt="Pratinjau Gambar" class="max-w-full max-h-[80vh] object-contain rounded-2xl shadow-2xl border-4 border-white/20">
+        </div>
+    </div>
+
+    <!-- Notification Toast Alert -->
+    <div id="toast-notification" class="fixed bottom-24 right-6 z-[200] transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <div id="toast-content" class="bg-brand-dark text-white px-6 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 border border-brand-green/30 text-sm font-medium">
+            <i id="toast-icon" class="fas fa-check-circle text-green-400 text-lg"></i>
+            <span id="toast-message">Notifikasi Berhasil</span>
+        </div>
+    </div>
+
+    <!-- Login Modal (CMS) -->
+    <div id="login-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4 sm:p-6 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-brand-dark/60 backdrop-blur-md" onclick="closeLoginModal()"></div>
+        
+        <div class="bg-white rounded-3xl w-full max-w-md relative z-10 shadow-2xl p-6 sm:p-8 animate-fade-in">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 w-8 h-8 bg-brand-light rounded-full flex items-center justify-center text-brand-dark hover:text-brand-orange hover:bg-brand-green/30 transition-all">
+                <i class="fas fa-times text-md"></i>
+            </button>
+            
+            <div class="text-center mb-8 mt-2">
+                <div class="w-16 h-16 bg-brand-green/30 rounded-full flex items-center justify-center text-brand-orange mx-auto mb-4">
+                    <i class="fas fa-tools text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-serif font-bold text-brand-dark mb-2">CMS WAHAB</h3>
+                <p class="text-brand-dark/70 text-sm">Masuk untuk mengelola menu, pesanan, dan profil toko.</p>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+                <div id="login-error" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-xl relative text-sm text-center mb-4" role="alert">
+                    <span class="block sm:inline">Username atau password salah! (Gunakan admin@wahab.com / admin112233)</span>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1" for="username">Username / Email</label>
+                    <input type="text" id="username" value="admin@wahab.com" required class="w-full px-4 py-3 rounded-xl border border-brand-green bg-brand-light/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition-all" autocomplete="username">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1" for="password">Password</label>
+                    <input type="password" id="password" value="admin112233" required class="w-full px-4 py-3 rounded-xl border border-brand-green bg-brand-light/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange/50 transition-all" autocomplete="current-password">
+                </div>
+                <div class="pt-4">
+                    <button type="submit" id="login-submit-btn" class="w-full py-3.5 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown transition-all shadow-md flex items-center justify-center">
+                        Masuk Dashboard CMS
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Form Modal (CMS Add/Edit) -->
+    <div id="product-form-modal" class="fixed inset-0 z-[120] hidden items-center justify-center p-4 sm:p-6 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-brand-dark/60 backdrop-blur-md" onclick="closeProductFormModal()"></div>
+        <div class="bg-white rounded-3xl w-full max-w-lg relative z-10 shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="product-form-title" class="text-xl font-serif font-bold text-brand-dark">Menu Baru</h3>
+                <button onclick="closeProductFormModal()" class="w-8 h-8 bg-brand-light rounded-full flex items-center justify-center text-brand-dark hover:text-brand-orange"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="product-edit-form" onsubmit="handleSaveProduct(event)" class="space-y-4">
+                <input type="hidden" id="edit-product-id">
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1">Nama Produk</label>
+                    <input type="text" id="form-product-name" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1">Kategori / Tag</label>
+                    <input type="text" id="form-product-badge" placeholder="Contoh: Best Seller / Favorit" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/50">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1">Upload Gambar (Maksimal 5 Gambar)</label>
+                    <input type="file" id="form-product-images" accept="image/*" multiple class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-green file:text-brand-dark hover:file:bg-brand-green/80">
+                    <p class="text-xs text-gray-500 mt-1">Pilih gambar dari perangkat Anda. Setiap gambar dapat dipratinjau atau dihapus.</p>
+                    <div id="form-image-preview-container" class="flex gap-3 mt-3 flex-wrap"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-brand-dark mb-1">Deskripsi Produk</label>
+                    <textarea id="form-product-desc" rows="4" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange/50"></textarea>
+                </div>
+                <div class="pt-4 flex gap-3">
+                    <button type="button" onclick="closeProductFormModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 text-sm">Batal</button>
+                    <button type="submit" class="flex-1 py-3 bg-brand-orange text-white font-medium rounded-xl hover:bg-brand-brown text-sm shadow-sm">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/6285977848480?text=Halo%20Toko%20WAHAB,%20saya%20ingin%20bertanya..." target="_blank" class="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 z-50">
+        <i class="fab fa-whatsapp text-3xl"></i>
+    </a>
+
+    <!-- Styling CSS -->
+    <style>
+        .animate-slide-up { animation: slideUp 0.3s ease-out forwards; }
+        .animate-fade-in { animation: fadeIn 0.3s ease-out forwards; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #fdfbf7; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e6ebd8; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8c4a32; }
+    </style>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Navbar Logic
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = mobileMenuBtn.querySelector('i');
+        const navbar = document.getElementById('navbar');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            menuIcon.classList.toggle('fa-bars');
+            menuIcon.classList.toggle('fa-times');
+        });
+
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                menuIcon.classList.add('fa-bars');
+                menuIcon.classList.remove('fa-times');
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-sm');
+                navbar.style.background = 'rgba(253, 251, 247, 0.95)';
+            } else {
+                navbar.classList.remove('shadow-sm');
+                navbar.style.background = 'rgba(253, 251, 247, 0.9)';
+            }
+        });
+
+        // App State & Data Produk
+        let productsData = {
+            'bolen': {
+                name: 'Bolen Lilit Spesial',
+                badge: 'Best Seller',
+                active: true,
+                description: 'Bolen lilit andalan WAHAB yang dibuat dengan resep rahasia keluarga.\n\nKulit pastry yang renyah dan berlapis berpadu sempurna dengan pisang raja pilihan yang manis, cokelat premium yang lumer di mulut, serta keju gurih berlimpah.\n\nDibuat fresh setiap hari tanpa bahan pengawet. Sangat cocok disajikan hangat untuk menemani waktu santai, minum teh, atau sebagai hantaran / oleh-oleh untuk orang tersayang.',
+                images: [
+                    'https://placehold.co/800x600/e6ebd8/8c4a32?text=Bolen+Lilit+Utama',
+                    'https://placehold.co/800x600/fdfbf7/e65c3d?text=Detail+Isian+Bolen',
+                    'https://placehold.co/800x600/e6ebd8/8c4a32?text=Kemasan+Bolen+WAHAB'
+                ]
+            },
+            'roti_manis': {
+                name: 'Roti Manis Aneka Rasa',
+                badge: 'Favorit',
+                active: true,
+                description: 'Koleksi roti manis klasik dengan tekstur yang sangat empuk dan serat kapas yang lembut.\n\nTersedia dalam berbagai pilihan isian favorit:\n- Cokelat Lumer\n- Keju Susu\n- Selai Srikaya Pandan\n- Unti Kelapa\n\nPas untuk sarapan pagi atau bekal aktivitas seharian.',
+                images: [
+                    'https://placehold.co/800x600/fdfbf7/e65c3d?text=Roti+Manis+Campur',
+                    'https://placehold.co/800x600/e6ebd8/8c4a32?text=Tekstur+Roti+Lembut'
+                ]
+            },
+            'kue_kering': {
+                name: 'Kue Kering Premium',
+                badge: 'Top',
+                active: true,
+                description: 'Kue kering berkualitas premium yang dibuat menggunakan mentega (butter) pilihan sehingga menghasilkan wangi yang menggugah selera dan lumer di mulut.\n\nVarian Tersedia:\n- Nastar Klasik (Isi selai nanas asli buatan sendiri)\n- Kastengel (Full keju edam yang gurih dan renyah)\n- Putri Salju (Dengan taburan gula dingin yang melimpah)\n\nTersedia dalam kemasan toples elegan, siap memeriahkan momen hari raya atau acara keluarga Anda.',
+                images: [
+                    'https://placehold.co/800x600/e65c3d/fdfbf7?text=Nastar+Premium',
+                    'https://placehold.co/800x600/8c4a32/fdfbf7?text=Kastengel+Keju',
+                    'https://placehold.co/800x600/e6ebd8/8c4a32?text=Hampers+Kue+Kering'
+                ]
+            },
+            'roti_gurih': {
+                name: 'Roti Gurih & Asin',
+                badge: 'Lezat',
+                active: true,
+                description: 'Bagi Anda yang lebih menyukai varian asin, kami menyediakan roti gurih yang mengenyangkan.\n\nVarian Favorit:\n- Roti Sosis Keju Mayonnaise\n- Roti Abon Sapi (Floss Roll)\n- Roti Pizza Mini dengan taburan paprika dan daging asap\n\nCocok untuk camilan sore hari atau penahan lapar di sela-sela jam makan utama.',
+                images: [
+                    'https://placehold.co/800x600/8c4a32/fdfbf7?text=Roti+Sosis+Keju',
+                    'https://placehold.co/800x600/fdfbf7/e65c3d?text=Roti+Abon+Gulung'
+                ]
+            }
+        };
+
+        // Temporary storage for uploaded images during edit/create
+        let currentUploadedImages = [];
+        let isShowingAllMenu = false;
+
+        document.getElementById('form-product-images').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            if (currentUploadedImages.length + files.length > 5) {
+                showToast('Maksimal total 5 gambar dalam satu produk!', 'error');
+                e.target.value = '';
+                return;
+            }
+
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentUploadedImages.push(event.target.result);
+                    renderFormThumbnails();
+                }
+                reader.readAsDataURL(file);
+            });
+            e.target.value = '';
+        });
+
+        function renderFormThumbnails() {
+            const previewContainer = document.getElementById('form-image-preview-container');
+            previewContainer.innerHTML = '';
+            
+            currentUploadedImages.forEach((imgSrc, index) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'relative group w-20 h-20 rounded-xl overflow-hidden border border-gray-300 shadow-sm bg-gray-50';
+                
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = 'w-full h-full object-cover';
+                wrapper.appendChild(img);
+
+                // Action buttons overlay on hover
+                const overlay = document.createElement('div');
+                overlay.className = 'absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2';
+                
+                // Preview button
+                const prevBtn = document.createElement('button');
+                prevBtn.type = 'button';
+                prevBtn.innerHTML = '<i class="fas fa-search-plus text-xs"></i>';
+                prevBtn.className = 'w-7 h-7 bg-white text-brand-dark rounded-full flex items-center justify-center hover:bg-brand-orange hover:text-white transition-colors';
+                prevBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    openImagePreviewModal(imgSrc);
+                };
+
+                // Delete button
+                const delBtn = document.createElement('button');
+                delBtn.type = 'button';
+                delBtn.innerHTML = '<i class="fas fa-trash-alt text-xs"></i>';
+                delBtn.className = 'w-7 h-7 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    currentUploadedImages.splice(index, 1);
+                    renderFormThumbnails();
+                };
+
+                overlay.appendChild(prevBtn);
+                overlay.appendChild(delBtn);
+                wrapper.appendChild(overlay);
+                previewContainer.appendChild(wrapper);
+            });
+        }
+
+        // Toast Notification System
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast-notification');
+            const messageEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+            
+            messageEl.textContent = message;
+            if(type === 'error') {
+                iconEl.className = 'fas fa-exclamation-circle text-red-400 text-lg';
+            } else {
+                iconEl.className = 'fas fa-check-circle text-green-400 text-lg';
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Image Preview Modal
+        function openImagePreviewModal(src) {
+            document.getElementById('preview-modal-img').src = src;
+            const modal = document.getElementById('image-preview-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeImagePreviewModal() {
+            const modal = document.getElementById('image-preview-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function handleViewAllMenu() {
+            isShowingAllMenu = true;
+            renderProducts();
+            document.getElementById('products-section-heading').textContent = 'Semua Menu WAHAB';
+            document.getElementById('products-section-subtitle').textContent = 'Koleksi lengkap roti, kue basah, dan kue kering istimewa kami.';
+            
+            // Switch button to "Kembali ke Menu Utama"
+            const btnContainer = document.getElementById('menu-action-container');
+            btnContainer.innerHTML = `
+                <button onclick="handleBackToMainMenu()" class="px-8 py-3 rounded-full bg-brand-orange text-white font-semibold hover:bg-brand-brown transition-all shadow-sm">
+                    <i class="fas fa-arrow-left mr-2"></i> Kembali ke Menu Utama
+                </button>
+            `;
+            window.location.hash = '#products';
+        }
+
+        function handleBackToMainMenu() {
+            isShowingAllMenu = false;
+            renderProducts();
+            document.getElementById('products-section-heading').textContent = 'Menu Spesial Kami';
+            document.getElementById('products-section-subtitle').textContent = 'Dibuat fresh setiap hari dengan bahan-bahan premium.';
+            
+            const btnContainer = document.getElementById('menu-action-container');
+            btnContainer.innerHTML = `
+                <button onclick="handleViewAllMenu()" id="view-all-btn" class="px-8 py-3 rounded-full bg-brand-green/40 border border-brand-green text-brand-dark font-semibold hover:bg-brand-orange hover:text-white transition-all shadow-sm">
+                    Lihat Semua Menu <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <p class="text-sm text-brand-dark/60 mt-4">*Menerima pesanan dalam jumlah besar untuk acara (syukuran, arisan, dll).</p>
+            `;
+            window.location.hash = '#products';
+        }
+
+        // Render produk ke public grid dan CMS table
+        function renderProducts() {
+            const publicGrid = document.getElementById('public-products-grid');
+            const cmsTableBody = document.getElementById('cms-products-table-body');
+            
+            if(!publicGrid || !cmsTableBody) return;
+            
+            publicGrid.innerHTML = '';
+            cmsTableBody.innerHTML = '';
+            
+            let displayEntries = Object.entries(productsData);
+            
+            // If on public view and not showing all, limit to 4 active products
+            let publicEntries = displayEntries.filter(([id, prod]) => prod.active !== false);
+            if (!isShowingAllMenu) {
+                publicEntries = publicEntries.slice(0, 4);
+            }
+
+            publicEntries.forEach(([id, prod]) => {
+                const mainImg = prod.images && prod.images.length > 0 ? prod.images[0] : 'https://placehold.co/600x400';
+                const badgeHtml = prod.badge ? `<span class="absolute top-4 right-4 bg-white/90 backdrop-blur text-brand-orange text-xs font-bold px-3 py-1.5 rounded-full shadow-sm">${prod.badge}</span>` : '';
+                
+                const cardDiv = document.createElement('div');
+                cardDiv.className = "product-card bg-white rounded-2xl overflow-hidden shadow-sm border border-brand-green/50 flex flex-col h-full cursor-pointer group";
+                cardDiv.onclick = () => openModal(id);
+                cardDiv.innerHTML = `
+                    <div class="h-48 relative overflow-hidden bg-brand-green/20">
+                        <img src="${mainImg}" alt="${prod.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        ${badgeHtml}
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-serif font-bold text-brand-dark mb-2">${prod.name}</h3>
+                        <p class="text-brand-dark/70 text-sm mb-4 line-clamp-2">${prod.description}</p>
+                        <span class="mt-auto text-brand-orange font-medium text-sm flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                            Lihat Detail <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </div>
+                `;
+                publicGrid.appendChild(cardDiv);
+            });
+
+            // Render CMS Table Row (All items)
+            displayEntries.forEach(([id, prod]) => {
+                const mainImg = prod.images && prod.images.length > 0 ? prod.images[0] : 'https://placehold.co/600x400';
+                const isActive = prod.active !== false;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50/80 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-4 px-6 flex items-center gap-3">
+                        <img src="${mainImg}" class="w-10 h-10 rounded-lg object-cover border border-gray-200 shrink-0">
+                        <span class="font-semibold text-brand-dark">${prod.name}</span>
+                    </td>
+                    <td class="py-4 px-6 text-gray-600">${prod.badge || 'Standar'}</td>
+                    <td class="py-4 px-6">
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" ${isActive ? 'checked' : ''} onchange="toggleProductStatus('${id}', this.checked)" class="sr-only peer">
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-orange"></div>
+                            <span class="ml-3 text-xs font-semibold ${isActive ? 'text-green-700' : 'text-gray-400'}">${isActive ? 'Aktif' : 'Tidak Aktif'}</span>
+                        </label>
+                    </td>
+                    <td class="py-4 px-6 text-right space-x-2">
+                        <button onclick="editProduct('${id}')" class="px-3 py-1.5 bg-brand-green/30 text-brand-dark rounded-lg text-xs font-semibold hover:bg-brand-green transition-all"><i class="fas fa-edit mr-1"></i> Edit</button>
+                        <button onclick="deleteProduct('${id}')" class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-semibold hover:bg-red-100 transition-all"><i class="fas fa-trash-alt mr-1"></i> Hapus</button>
+                    </td>
+                `;
+                cmsTableBody.appendChild(tr);
+            });
+        }
+
+        function toggleProductStatus(productId, status) {
+            if(productsData[productId]) {
+                productsData[productId].active = status;
+                renderProducts();
+                showToast(`Status menu "${productsData[productId].name}" berhasil diperbarui!`);
+            }
+        }
+
+        // Switch View Antara Public Website dan CMS Dashboard
+        function switchView(viewName) {
+            const publicView = document.getElementById('public-view');
+            const cmsView = document.getElementById('cms-view');
+            
+            if(viewName === 'cms') {
+                publicView.classList.add('hidden');
+                cmsView.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            } else {
+                cmsView.classList.add('hidden');
+                publicView.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // Switch Tab di dalam CMS
+        function switchCmsTab(tabName) {
+            document.querySelectorAll('.cms-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.cms-tab-btn').forEach(el => {
+                el.classList.remove('text-brand-orange', 'bg-brand-green/20');
+                el.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+            
+            document.getElementById(`cms-tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            activeBtn.classList.remove('text-gray-600', 'hover:bg-gray-50');
+            activeBtn.classList.add('text-brand-orange', 'bg-brand-green/20');
+        }
+
+        // Modal Produk Detail di Public
+        const modal = document.getElementById('product-modal');
+        const modalMainImg = document.getElementById('modal-main-img');
+        const modalThumbnailsContainer = document.getElementById('modal-thumbnails');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalOrderBtn = document.getElementById('modal-order-btn');
+
+        function openModal(productId) {
+            const product = productsData[productId];
+            if(!product) return;
+            
+            modalTitle.textContent = product.name;
+            modalDesc.textContent = product.description;
+            modalMainImg.src = product.images[0];
+            
+            modalThumbnailsContainer.innerHTML = '';
+            product.images.forEach((imgSrc, index) => {
+                const thumbWrapper = document.createElement('div');
+                thumbWrapper.className = `w-16 h-16 sm:w-20 sm:h-20 shrink-0 cursor-pointer rounded-lg overflow-hidden border-2 transition-all duration-200 ${index === 0 ? 'border-brand-orange scale-100 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}`;
+                
+                const thumbImg = document.createElement('img');
+                thumbImg.src = imgSrc;
+                thumbImg.className = 'w-full h-full object-cover';
+                thumbWrapper.appendChild(thumbImg);
+                
+                thumbWrapper.onclick = () => {
+                    modalMainImg.src = imgSrc;
+                    Array.from(modalThumbnailsContainer.children).forEach(child => {
+                        child.classList.remove('border-brand-orange', 'scale-100', 'opacity-100');
+                        child.classList.add('border-transparent', 'opacity-60');
+                    });
+                    thumbWrapper.classList.remove('border-transparent', 'opacity-60');
+                    thumbWrapper.classList.add('border-brand-orange', 'scale-100', 'opacity-100');
+                };
+                modalThumbnailsContainer.appendChild(thumbWrapper);
+            });
+            
+            modalOrderBtn.onclick = () => orderItem(product.name);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function orderItem(itemName) {
+            const phoneNumber = "6285977848480";
+            const message = encodeURIComponent(`Halo Toko WAHAB, saya melihat website Anda dan tertarik untuk memesan produk *${itemName}*. Boleh minta informasi harga dan cara pembayarannya?`);
+            window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+        }
+
+        // Login Modal Logic
+        const loginModal = document.getElementById('login-modal');
+        
+        function openLoginModal() {
+            loginModal.classList.remove('hidden');
+            loginModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            if (!mobileMenu.classList.contains('hidden')) mobileMenuBtn.click();
+        }
+
+        function closeLoginModal() {
+            loginModal.classList.add('hidden');
+            loginModal.classList.remove('flex');
+            if (modal.classList.contains('hidden')) document.body.style.overflow = '';
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const btn = document.getElementById('login-submit-btn');
+            const errorMsg = document.getElementById('login-error');
+            const originalText = btn.innerHTML;
+            const userVal = document.getElementById('username').value;
+            const passVal = document.getElementById('password').value;
+            
+            errorMsg.classList.add('hidden');
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Mengautentikasi...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                if(userVal === 'admin@wahab.com' && passVal === 'admin112233') {
+                    btn.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Berhasil Masuk!';
+                    btn.classList.remove('bg-brand-orange');
+                    btn.classList.add('bg-green-600');
+                    
+                    setTimeout(() => {
+                        closeLoginModal();
+                        setAdminState(true);
+                        switchView('cms'); 
+                        showToast('Berhasil masuk ke Dashboard Admin!');
+                        
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                            btn.classList.remove('bg-green-600');
+                            btn.classList.add('bg-brand-orange');
+                        }, 500);
+                    }, 800);
+                } else {
+                    errorMsg.classList.remove('hidden');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }, 800);
+        }
+
+        // Admin State
+        function setAdminState(isLoggedIn) {
+            const desktopContainer = document.getElementById('auth-container-desktop');
+            const mobileContainer = document.getElementById('auth-container-mobile');
+
+            if (isLoggedIn) {
+                desktopContainer.innerHTML = `
+                    <div class="relative">
+                        <button onclick="toggleAdminDropdown(event)" class="flex items-center gap-2 bg-brand-green text-brand-dark px-4 py-2 rounded-full text-sm font-bold border border-brand-brown/20 hover:bg-brand-green/80 transition-all shadow-sm">
+                            <i class="fas fa-user-shield text-brand-orange"></i>
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-down text-xs ml-1"></i>
+                        </button>
+                        <div id="admin-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-brand-green py-2 z-50 animate-fade-in">
+                            <a href="#" onclick="switchView('cms'); toggleAdminDropdown(event);" class="block px-4 py-2 text-sm text-brand-dark hover:bg-brand-green/30 transition-colors">
+                                <i class="fas fa-columns mr-2 text-brand-orange"></i> Ke CMS
+                            </a>
+                            <div class="border-t border-brand-green/30 my-1"></div>
+                            <a href="#" onclick="handleLogout(event)" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                `;
+
+                mobileContainer.innerHTML = `
+                    <div class="px-3 py-2 space-y-1 bg-brand-green/20 rounded-xl my-2 border border-brand-green">
+                        <div class="flex items-center gap-2 text-sm font-bold text-brand-dark mb-2 px-1">
+                            <i class="fas fa-user-shield text-brand-orange"></i> Admin WAHAB
+                        </div>
+                        <a href="#" onclick="switchView('cms'); if(!mobileMenu.classList.contains('hidden')) mobileMenuBtn.click();" class="block px-3 py-2 text-sm font-medium text-brand-dark hover:bg-brand-green/50 rounded-lg">
+                            <i class="fas fa-columns mr-2 text-brand-orange"></i> Ke CMS
+                        </a>
+                        <a href="#" onclick="handleLogout(event); if(!mobileMenu.classList.contains('hidden')) mobileMenuBtn.click();" class="block px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 rounded-lg">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        </a>
+                    </div>
+                `;
+            } else {
+                desktopContainer.innerHTML = `<button onclick="openLoginModal()" class="text-brand-orange border-2 border-brand-orange hover:bg-brand-orange hover:text-white transition-colors px-5 py-1.5 rounded-full text-sm font-bold ml-2">Login</button>`;
+                mobileContainer.innerHTML = `<button onclick="openLoginModal()" class="w-full text-left block px-3 py-2 text-base font-bold text-brand-orange hover:bg-brand-orange hover:text-white rounded-md transition-colors"><i class="fas fa-lock text-sm mr-2"></i>Login ke CMS</button>`;
+            }
+        }
+
+        function toggleAdminDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('admin-dropdown');
+            if(dropdown) dropdown.classList.toggle('hidden');
+        }
+
+        window.addEventListener('click', () => {
+            const dropdown = document.getElementById('admin-dropdown');
+            if(dropdown && !dropdown.classList.contains('hidden')) dropdown.classList.add('hidden');
+        });
+
+        function handleLogout(event) {
+            event.preventDefault();
+            setAdminState(false);
+            switchView('public');
+            showToast('Berhasil keluar dari akun admin.');
+        }
+
+        // Product Form Modal CMS (Tambah / Edit)
+        const productFormModal = document.getElementById('product-form-modal');
+        
+        function openProductFormModal(productId = null) {
+            productFormModal.classList.remove('hidden');
+            productFormModal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+            
+            const formTitle = document.getElementById('product-form-title');
+            currentUploadedImages = [];
+
+            if(productId) {
+                formTitle.textContent = "Edit Menu Produk";
+                const prod = productsData[productId];
+                document.getElementById('edit-product-id').value = productId;
+                document.getElementById('form-product-name').value = prod.name;
+                document.getElementById('form-product-badge').value = prod.badge || '';
+                document.getElementById('form-product-desc').value = prod.description;
+                currentUploadedImages = [...prod.images];
+            } else {
+                formTitle.textContent = "Menu Baru";
+                document.getElementById('product-edit-form').reset();
+                document.getElementById('edit-product-id').value = '';
+                currentUploadedImages = ['https://placehold.co/800x600/e6ebd8/8c4a32?text=Menu+Baru+WAHAB'];
+            }
+            renderFormThumbnails();
+        }
+
+        function closeProductFormModal() {
+            productFormModal.classList.add('hidden');
+            productFormModal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        function editProduct(productId) {
+            openProductFormModal(productId);
+        }
+
+        function deleteProduct(productId) {
+            const prodName = productsData[productId]?.name || 'Produk';
+            if(confirm(`Yakin ingin menghapus produk "${prodName}" dari menu?`)) {
+                delete productsData[productId];
+                renderProducts();
+                showToast(`Produk "${prodName}" berhasil dihapus!`);
+            }
+        }
+
+        function handleSaveProduct(event) {
+            event.preventDefault();
+            const editId = document.getElementById('edit-product-id').value;
+            const name = document.getElementById('form-product-name').value;
+            const badge = document.getElementById('form-product-badge').value;
+            const desc = document.getElementById('form-product-desc').value;
+            
+            const key = editId ? editId : 'prod_' + Date.now();
+            const isEditing = !!editId;
+            
+            productsData[key] = {
+                name: name,
+                badge: badge,
+                active: true,
+                description: desc,
+                images: currentUploadedImages.length > 0 ? currentUploadedImages : ['https://placehold.co/800x600/e6ebd8/8c4a32?text=Menu+WAHAB']
+            };
+            
+            renderProducts();
+            closeProductFormModal();
+            showToast(isEditing ? `Menu "${name}" berhasil diperbarui!` : `Menu "${name}" berhasil ditambahkan!`);
+        }
+
+        function saveHeroSettings(event) {
+            event.preventDefault();
+            const newTagline = document.getElementById('setting-hero-tagline').value;
+            const newTitle = document.getElementById('setting-hero-title').value;
+            const newDesc = document.getElementById('setting-hero-desc').value;
+
+            document.getElementById('hero-tagline').textContent = newTagline;
+            document.getElementById('hero-title').innerHTML = newTitle.replace(/\n/g, '<br/>');
+            document.getElementById('hero-desc').textContent = newDesc;
+
+            showToast('Hero Section berhasil diperbarui!');
+        }
+
+        function saveStoreSettings(event) {
+            event.preventDefault();
+            const storeName = document.getElementById('setting-store-name').value;
+            const address = document.getElementById('setting-address').value;
+            const phone = document.getElementById('setting-whatsapp').value;
+
+            document.getElementById('footer-address-text').innerHTML = address.replace(/,/g, ',<br/>');
+            document.getElementById('footer-phone-text').textContent = '+' + phone.replace(/^(\+)?/, '');
+
+            showToast('Profil toko berhasil disimpan!');
+        }
+
+        // Inisialisasi awal render produk
+        renderProducts();
+    </script>
+</body>
+</html>
