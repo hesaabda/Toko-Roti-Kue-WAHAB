@@ -223,7 +223,7 @@
     background: var(--brown-dark);
     color: var(--white);
   }
- .hero-image {
+  .hero-image {
     position: relative;
     border-radius: 24px;
     overflow: hidden;
@@ -240,6 +240,26 @@
     height: 100%;
     object-fit: contain;
     display: block;
+  }
+  .hero-badge {
+    position: absolute;
+    bottom: 24px; left: 24px;
+    background: var(--white);
+    padding: 16px 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(61, 40, 23, 0.15);
+  }
+  .hero-badge .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--terracotta);
+    line-height: 1;
+  }
+  .hero-badge .lbl {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    margin-top: 4px;
   }
   @media (max-width: 768px) {
     .hero { padding: 90px 20px 40px; }
@@ -890,7 +910,7 @@
 
   /* PRODUCT MODAL - REVISED GALLERY */
   .product-modal .modal {
-    max-width: 700px;
+    max-width: 720px;
   }
   .product-gallery {
     display: grid;
@@ -916,6 +936,18 @@
     gap: 10px;
     max-height: calc(75% * (4/3));
     overflow-y: auto;
+    padding-right: 4px;
+  }
+  .product-gallery .thumb-list::-webkit-scrollbar {
+    width: 4px;
+  }
+  .product-gallery .thumb-list::-webkit-scrollbar-track {
+    background: var(--cream-dark);
+    border-radius: 4px;
+  }
+  .product-gallery .thumb-list::-webkit-scrollbar-thumb {
+    background: var(--terracotta);
+    border-radius: 4px;
   }
   .product-gallery .thumb {
     width: 72px;
@@ -991,6 +1023,11 @@
       max-height: none;
       overflow-x: auto;
       overflow-y: hidden;
+      padding-right: 0;
+      padding-bottom: 4px;
+    }
+    .product-gallery .thumb-list::-webkit-scrollbar {
+      height: 4px;
     }
     .product-gallery .thumb { 
       width: 64px; 
@@ -1299,7 +1336,11 @@
         </div>
       </div>
       <div class="hero-image">
-        <img src="wahab_hd_transparent.png" alt="Bolen Pisang WAHAB" />
+        <img src="https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png" alt="Bolen Pisang WAHAB" />
+        <div class="hero-badge">
+          <div class="num">100%</div>
+          <div class="lbl">Bahan Premium</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1610,7 +1651,7 @@
           <p class="section-desc">Kelola konten website Anda dengan mudah. Pilih menu di sidebar untuk mulai mengedit bagian-bagian website.</p>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-top: 24px;">
             <div style="background: var(--cream); padding: 20px; border-radius: 12px;">
-              <h4 style="color: var(--brown-dark); margin-bottom: 8px;"> Kustomisasi</h4>
+              <h4 style="color: var(--brown-dark); margin-bottom: 8px;">🎨 Kustomisasi</h4>
               <p style="font-size: 0.9rem; color: var(--text-soft);">Ubah teks, gambar, dan warna sesuai kebutuhan</p>
             </div>
             <div style="background: var(--cream); padding: 20px; border-radius: 12px;">
@@ -1749,10 +1790,10 @@
           <h3>Data & Backup</h3>
           <p class="section-desc">Kelola data website Anda</p>
           <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-            <button class="btn-admin btn-preview" onclick="exportData()">📥 Export Data</button>
+            <button class="btn-admin btn-preview" onclick="exportData()"> Export Data</button>
             <button class="btn-admin btn-preview" onclick="document.getElementById('importFile').click()">📤 Import Data</button>
             <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importData(event)" />
-            <button class="btn-admin" style="background: #D32F2F; color: white;" onclick="resetData()">️ Reset Data</button>
+            <button class="btn-admin" style="background: #D32F2F; color: white;" onclick="resetData()">🗑️ Reset Data</button>
           </div>
         </div>
       </div>
@@ -1764,7 +1805,7 @@
 <div class="toast" id="toast">Perubahan berhasil disimpan!</div>
 
 <script>
-  // Product data - 12 produk dengan kategori
+  // Product data - 12 produk dengan kategori, masing-masing 6 gambar
   const products = [
     {
       name: 'Bolen Pisang',
@@ -1774,7 +1815,11 @@
       price: 'Rp 35.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1785,7 +1830,11 @@
       price: 'Rp 25.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/183402687-e70c-4b58-aef4-ee1165bd27fd.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/183402687-e70c-4b58-aef4-ee1165bd27fd.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/183402687-e70c-4b58-aef4-ee1165bd27fd.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1796,7 +1845,11 @@
       price: 'Rp 38.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/138a3a328-34fe-4a7b-a430-2757cbe9d242.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1807,7 +1860,11 @@
       price: 'Rp 85.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17f883880-bc0e-465b-8a62-f3b1f5cf711e.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17f883880-bc0e-465b-8a62-f3b1f5cf711e.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17f883880-bc0e-465b-8a62-f3b1f5cf711e.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1818,7 +1875,11 @@
       price: 'Rp 65.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1426235e4-2e4d-4437-8560-20cadf60ce41.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1426235e4-2e4d-4437-8560-20cadf60ce41.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1426235e4-2e4d-4437-8560-20cadf60ce41.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1829,7 +1890,11 @@
       price: 'Rp 28.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17bf27e6d-940f-4c10-9b8b-f9dc9c8dd05c.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17bf27e6d-940f-4c10-9b8b-f9dc9c8dd05c.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/17bf27e6d-940f-4c10-9b8b-f9dc9c8dd05c.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1840,7 +1905,11 @@
       price: 'Rp 45.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1851,7 +1920,11 @@
       price: 'Rp 40.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/18a1d56bb-a842-45cc-8a79-fd10629e9ec5.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1862,7 +1935,11 @@
       price: 'Rp 55.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1159ad887-795f-44b7-a271-dd9a9960ea49.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1159ad887-795f-44b7-a271-dd9a9960ea49.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1159ad887-795f-44b7-a271-dd9a9960ea49.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1873,7 +1950,11 @@
       price: 'Rp 60.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/159c04c73-9933-420a-bece-842e33e10f8c.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/159c04c73-9933-420a-bece-842e33e10f8c.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/159c04c73-9933-420a-bece-842e33e10f8c.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1884,7 +1965,11 @@
       price: 'Rp 50.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     },
     {
@@ -1895,7 +1980,11 @@
       price: 'Rp 48.000',
       images: [
         'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png',
-        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png'
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png?v=3',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=4',
+        'https://image.qwenlm.ai/public_source/9056d56f-9875-4691-9379-35ba0ffc4137/1f5b23f94-a927-496b-9758-cd497d036851.png?v=5',
+        'https://image.qwenlm.ai/public_source/a81becc4-c25b-4f7c-aa80-0a359f170bb7/17c277207-d1d3-44b3-ae05-22760c7d4da4.png?v=6'
       ]
     }
   ];
@@ -2016,7 +2105,7 @@
     if (!productGrid) return;
     productGrid.innerHTML = '';
     const featured = products.slice(0, 4);
-    featured.forEach((product, index) => {
+    featured.forEach((product) => {
       const card = document.createElement('div');
       card.className = 'product-card fade-in';
       card.onclick = () => openProductModal(products.indexOf(product));
@@ -2204,10 +2293,13 @@
     
     const thumbList = document.getElementById('thumbList');
     thumbList.innerHTML = '';
-    product.images.forEach((img, i) => {
+    
+    // Render minimal 6 thumbnail images
+    const thumbImages = product.images.slice(0, 6);
+    thumbImages.forEach((img, i) => {
       const thumb = document.createElement('div');
       thumb.className = 'thumb' + (i === 0 ? ' active' : '');
-      thumb.innerHTML = `<img src="${img}" alt="Thumb ${i}" />`;
+      thumb.innerHTML = `<img src="${img}" alt="Foto ${product.name} ${i + 1}" />`;
       thumb.onclick = () => {
         document.getElementById('mainProductImg').src = img;
         document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
